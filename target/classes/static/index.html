@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VNPAY Payment</title>
+    <script>
+        function createPayment() {
+            const amount = document.getElementById("amount").value;
+            if (!amount || isNaN(amount)) {
+                alert("Please enter a valid amount.");
+                return;
+            }
+
+            fetch("/api/v1/vnpay/create-payment?amount=" + amount, {
+                method: "POST"
+            })
+            .then(response => response.json())
+            .then(data => {
+                window.location.href = data.payUrl;
+            })
+            .catch(error => {
+                alert("An error occurred while creating the payment!");
+                console.error(error);
+            });
+        }
+    </script>
+</head>
+<body style="font-family: Arial; text-align: center; padding-top: 50px;">
+    <h2>Pay Your Order via VNPAY</h2>
+    <input type="number" id="amount" placeholder="Enter amount (VND)">
+    <br><br>
+    <button onclick="createPayment()">Pay Now</button>
+</body>
+</html>
